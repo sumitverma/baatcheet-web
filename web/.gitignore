@@ -34,6 +34,11 @@ yarn-error.log*
 .env*
 !.env.example
 
+# locally staged mobile release binaries (large; do not commit)
+public/releases/**/*.ipa
+public/releases/**/*.apk
+!public/releases/**/*.plist
+
 # vercel
 .vercel
 

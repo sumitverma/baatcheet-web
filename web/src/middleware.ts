@@ -16,7 +16,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  if (pathname.startsWith('/api/auth/verify') || pathname.startsWith('/api/auth/logout')) {
+  if (
+    pathname.startsWith('/api/auth/verify') ||
+    pathname.startsWith('/api/auth/logout') ||
+    pathname.startsWith('/api/releases/')
+  ) {
     return NextResponse.next()
   }
 

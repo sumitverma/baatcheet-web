@@ -4,13 +4,19 @@ import {SignOutButton} from '@/components/SignOutButton'
 
 type ReleaseInstallPageProps = {
   content: ReleaseDownloadPageContent | null
+  iosManifestDownloadUrl: string | null
+  androidApkDownloadUrl: string | null
 }
 
-export function ReleaseInstallPage({content}: ReleaseInstallPageProps) {
+export function ReleaseInstallPage({
+  content,
+  iosManifestDownloadUrl,
+  androidApkDownloadUrl,
+}: ReleaseInstallPageProps) {
   const heading = content?.pageHeading?.trim() || 'BaatCheet'
   const subheading = content?.pageSubheading?.trim() || 'Private install for people you trust.'
-  const iosManifestUrl = content?.iosManifestUrl?.trim() || ''
-  const androidApkUrl = content?.androidApkUrl?.trim() || ''
+  const iosManifestUrl = iosManifestDownloadUrl?.trim() || ''
+  const androidApkUrl = androidApkDownloadUrl?.trim() || ''
   const versionLabel = content?.currentVersionLabel?.trim()
   const whatsNew = content?.whatsNew?.trim()
 
@@ -70,7 +76,7 @@ export function ReleaseInstallPage({content}: ReleaseInstallPageProps) {
             {hasIos ? (
               <a
                 href={iosInstallHref}
-                className="mt-6 inline-flex items-center justify-center rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-zinc-900 transition hover:bg-zinc-100"
+                className="mt-6 inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-emerald-500"
               >
                 Install on iPhone
               </a>

@@ -3,8 +3,8 @@ import {createClient, type SanityClient} from '@sanity/client'
 export type ReleaseDownloadPageContent = {
   pageHeading: string | null
   pageSubheading: string | null
-  iosManifestUrl: string | null
-  androidApkUrl: string | null
+  iosIpaBlobPath: string | null
+  androidApkBlobPath: string | null
   currentVersionLabel: string | null
   whatsNew: string | null
 }
@@ -12,8 +12,8 @@ export type ReleaseDownloadPageContent = {
 const RELEASE_DOWNLOAD_PAGE_QUERY = `*[_id == "releaseDownloadPage"][0]{
   pageHeading,
   pageSubheading,
-  "iosManifestUrl": iosManifestUrl,
-  "androidApkUrl": androidApkUrl,
+  "iosIpaBlobPath": coalesce(iosIpaBlobPath, iosManifestUrl),
+  "androidApkBlobPath": coalesce(androidApkBlobPath, androidApkUrl),
   currentVersionLabel,
   whatsNew
 }`
@@ -34,8 +34,26 @@ function createSanityReadClient(): SanityClient | null {
 
 export async function fetchReleaseDownloadPageContentFromSanity(): Promise<ReleaseDownloadPageContent | null> {
   const client = createSanityReadClient()
-  if (!client) {
-    return null
+  const fallbackContent: ReleaseDownloadPageContent = {
+    pageHeading: null,
+    pageSubheading: null,
+    iosIpaBlobPath: null,
+    androidApkBlobPath: null,
+    currentVersionLabel: null,
+    whatsNew: null,
   }
-  return client.fetch<ReleaseDownloadPageContent | null>(RELEASE_DOWNLOAD_PAGE_QUERY)
+
+  if (!client) {
+    return fallbackContent
+  }
+
+  const sanityContent = await client.fetch<ReleaseDownloadPageContent | null>(RELEASE_DOWNLOAD_PAGE_QUERY)
+  if (!sanityContent) {
+    return fallbackContent
+  }
+
+  return {
+    ...fallbackContent,
+    ...sanityContent,
+  }
 }
