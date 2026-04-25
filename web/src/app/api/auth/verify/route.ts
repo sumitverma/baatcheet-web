@@ -11,7 +11,7 @@ type VerifyRequestBody = {
 }
 
 export async function POST(request: Request) {
-  const expectedAccessCode = process.env.BAATCHEET_ACCESS_CODE
+  const expectedAccessCode = process.env.BAATCHEET_ACCESS_CODE?.trim() ?? ''
   if (!expectedAccessCode) {
     return NextResponse.json(
       {error: 'This site is not ready yet. Ask the person who sent you the link for help.'},
